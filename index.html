@@ -10,7 +10,10 @@
 
 <header>
   <div id="menuBtn">☰</div>
-  <div class="logo">Bibo's Creation</div>
+
+  <div class="header-center">Bibo's Creation</div>
+
+  <img src="20251221_214638.jpg" alt="Bibo's Creation Logo" class="header-logo">
 </header>
 
 <!-- OVERLAY -->
@@ -46,19 +49,16 @@
   const overlay = document.getElementById("overlay");
   const ownerPanel = document.getElementById("ownerPanel");
 
-  // OPEN MENU
   menuBtn.onclick = () => {
     sideMenu.classList.add("open");
     overlay.classList.add("show");
   };
 
-  // CLOSE MENU
   overlay.onclick = () => {
     sideMenu.classList.remove("open");
     overlay.classList.remove("show");
   };
 
-  // OWNER LOGIN
   function ownerLogin() {
     const pass = prompt("Enter owner password:");
     if (pass === "6290386950") {
@@ -70,7 +70,6 @@
     }
   }
 
-  // JSON GENERATOR
   function generateJSON() {
     const f = fileName.value.trim();
     const d = fileDesc.value.trim();
@@ -81,7 +80,6 @@
 },`;
   }
 
-  // GALLERY LOADING
   fetch("images.json?cache=" + Date.now())
     .then(res => res.json())
     .then(data => {
@@ -98,8 +96,9 @@
     });
 
   function showAbout() {
-    alert("Bibo’s Creation showcases handmade earings and drawings created with passion."); }
+    alert("Bibo’s Creation showcases handmade earings and drawings created with passion.");
+  }
 </script>
 
 </body>
-                                      </html>
+</html>
