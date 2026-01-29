@@ -13,7 +13,9 @@
 
   <div class="header-center">Bibo's Creation</div>
 
-  <img src="Screenshot_20251221_214638_Chrome.jpg" alt="Bibo's Creation Logo" class="header-logo">
+  <img src="Screenshot_20251221_214638_Chrome.jpg"
+       alt="Bibo's Creation Logo"
+       class="header-logo">
 </header>
 
 <!-- OVERLAY -->
@@ -37,7 +39,7 @@
 <!-- OWNER PANEL -->
 <div id="ownerPanel">
   <h3>Owner Panel</h3>
-  <input type="text" id="fileName" placeholder="file.jpg">
+  <input type="text" id="fileName" placeholder="file.jpg / file.mp4">
   <input type="text" id="fileDesc" placeholder="description">
   <button onclick="generateJSON()">Generate JSON</button>
   <textarea id="generated" readonly></textarea>
@@ -76,7 +78,8 @@
     if (!f) return alert("Enter file name.");
     generated.value = `{
   "file": "${f}",
-  "desc": "${d}"
+  "desc": "${d}",
+  "type": "${f.endsWith('.mp4') ? 'video' : 'image'}"
 },`;
   }
 
@@ -84,13 +87,31 @@
     .then(res => res.json())
     .then(data => {
       const gallery = document.getElementById("gallery");
+
       data.forEach(item => {
         let div = document.createElement("div");
         div.className = "card";
+
+        let mediaHTML = "";
+
+        if (item.type === "video") {
+          mediaHTML = `
+            <video controls>
+              <source src="images/${item.file}" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          `;
+        } else {
+          mediaHTML = `
+            <img src="images/${item.file}">
+          `;
+        }
+
         div.innerHTML = `
-          <img src="images/${item.file}">
+          ${mediaHTML}
           <p>${item.desc}</p>
         `;
+
         gallery.appendChild(div);
       });
     });
