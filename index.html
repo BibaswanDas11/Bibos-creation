@@ -1,29 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Basic SEO -->
-  <meta name="google-site-verification" content="Alhr8fqmSjOB6sTEr2xxd4CZT4vbdTmqc1KHwRIO-qQ" />
-  <title>Bibos Creation | Projects, Designs & Innovations</title>
+<meta charset="UTF-8">
+<meta name="google-site-verification" content="Alhr8fqmSjOB6sTEr2xxd4CZT4vbdTmqc1KHwRIO-qQ">
 
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bibos Creation | Projects, Designs & Innovations</title>
 
-  <meta name="description"
-        content="Bibos Creation is a creative website by Bibaswan Das showcasing student projects, electronics models, web designs, and innovative ideas.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Bibos Creation is a creative website by Bibaswan Das showcasing student projects, electronics models, web designs, and innovative ideas.">
+<meta name="keywords" content="Bibos Creation, Bibaswan Das, student projects, electronics projects, web design">
+<meta name="author" content="Bibaswan Das">
+<meta name="robots" content="index, follow">
 
-  <meta name="keywords"
-        content="Bibos Creation, Bibaswan Das, student projects, electronics projects, creative models, web design">
-
-  <meta name="author" content="Bibaswan Das">
-  <meta name="robots" content="index, follow">
-
-  <!-- Open Graph -->
-  <meta property="og:title" content="Bibos Creation">
-  <meta property="og:description" content="Creative projects and innovations by Bibaswan Das">
-  <meta property="og:url" content="https://bibaswandas11.github.io/Bibos-creation/">
-  <meta property="og:type" content="website">
-
-  <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -31,29 +20,52 @@
 <header>
   <div id="menuBtn">☰</div>
   <div class="header-center">Bibo's Creation</div>
-  <img src="Screenshot_20251221_214638_Chrome.jpg" alt="Logo" class="header-logo">
+  <img src="Screenshot_20251221_214638_Chrome.jpg" class="header-logo">
 </header>
 
 <div id="overlay"></div>
 
+<!-- SIDE MENU -->
 <div id="sideMenu">
   <h3>Menu</h3>
-  <a href="#" onclick="showAbout(); return false;">Home / About</a>
+  <a href="#" onclick="openAbout();return false;">Home / About</a>
   <a href="https://wa.me/916290386950" target="_blank">WhatsApp</a>
-  <a href="#" onclick="ownerLogin(); return false;">Register as Owner</a>
+  <a href="#" onclick="ownerLogin();return false;">Register as Owner</a>
+
+  <!-- Privacy policy link -->
+  <p class="privacy-link">privacy policy</p>
 </div>
 
-<h2 class="title fade">Public Gallery</h2>
+<h2 class="title">Public Gallery</h2>
 
-<div class="category-bar fade">
-  <button onclick="filterGallery('all', event)" class="active">All</button>
-  <button onclick="filterGallery('image', event)">Images</button>
-  <button onclick="filterGallery('video', event)">Videos</button>
+<div class="category-bar">
+  <button onclick="filterGallery('all')" class="active">All</button>
+  <button onclick="filterGallery('image')">Images</button>
+  <button onclick="filterGallery('video')">Videos</button>
 </div>
 
 <div id="gallery"></div>
 
-<div id="ownerPanel" class="fade">
+<!-- FULL SCREEN ABOUT -->
+<section id="aboutPage">
+  <span class="closeBtn" onclick="closeAbout()">✕</span>
+
+  <div class="about-content">
+    <img src="images/your-photo.jpg" class="about-img">
+    <div class="blur-line"></div>
+
+    <p>
+      Hi, I’m <b>Bibaswan Das</b>, a Class 9 student passionate about creativity,
+      electronics projects, and web design.  
+      <br><br>
+      <b>Bibos Creation</b> is my personal space to showcase learning, experiments,
+      and imagination while balancing studies and innovation.
+    </p>
+  </div>
+</section>
+
+<!-- OWNER PANEL -->
+<div id="ownerPanel">
   <h3>Owner Panel</h3>
   <input type="text" id="fileName" placeholder="file.jpg or video.mp4">
   <input type="text" id="fileDesc" placeholder="description">
@@ -62,75 +74,64 @@
 </div>
 
 <script>
-  const menuBtn = document.getElementById("menuBtn");
-  const sideMenu = document.getElementById("sideMenu");
-  const overlay = document.getElementById("overlay");
-  const ownerPanel = document.getElementById("ownerPanel");
+const menuBtn = document.getElementById("menuBtn");
+const sideMenu = document.getElementById("sideMenu");
+const overlay = document.getElementById("overlay");
+const ownerPanel = document.getElementById("ownerPanel");
 
-  menuBtn.onclick = () => {
-    sideMenu.classList.add("open");
-    overlay.classList.add("show");
-  };
+menuBtn.onclick = () => {
+  sideMenu.classList.add("open");
+  overlay.classList.add("show");
+};
 
-  overlay.onclick = () => {
-    sideMenu.classList.remove("open");
-    overlay.classList.remove("show");
-  };
+overlay.onclick = () => {
+  sideMenu.classList.remove("open");
+  overlay.classList.remove("show");
+};
 
-  function ownerLogin() {
-    const pass = prompt("Enter owner password:");
-    if (pass === "6290386950") {
-      ownerPanel.style.display = "block";
-    } else {
-      alert("Incorrect password");
-    }
-  }
+function openAbout(){
+  document.getElementById("aboutPage").classList.add("show");
+  sideMenu.classList.remove("open");
+  overlay.classList.remove("show");
+}
 
-  function generateJSON() {
-    const f = fileName.value.trim();
-    const d = fileDesc.value.trim();
-    if (!f) return alert("Enter file name");
+function closeAbout(){
+  document.getElementById("aboutPage").classList.remove("show");
+}
 
-    generated.value = `{
-  "file": "${f}",
-  "desc": "${d}"
+function ownerLogin(){
+  const pass = prompt("Enter owner password:");
+  ownerPanel.style.display = pass==="6290386950" ? "block" : "none";
+}
+
+function generateJSON(){
+  generated.value = `{
+  "file": "${fileName.value}",
+  "desc": "${fileDesc.value}"
 },`;
-  }
+}
 
-  fetch("images.json?cache=" + Date.now())
-    .then(res => res.json())
-    .then(data => {
-      const gallery = document.getElementById("gallery");
+fetch("images.json?"+Date.now())
+.then(r=>r.json())
+.then(data=>{
+  data.forEach(item=>{
+    const card=document.createElement("div");
+    const isVideo=item.file.endsWith(".mp4");
+    card.className="card "+(isVideo?"video":"image");
+    card.innerHTML=isVideo?
+    `<video controls src="videos/${item.file}"></video><p>${item.desc}</p>`:
+    `<img src="images/${item.file}"><p>${item.desc}</p>`;
+    gallery.appendChild(card);
+  });
+});
 
-      data.forEach((item, i) => {
-        const isVideo = item.file.endsWith(".mp4") || item.file.endsWith(".webm");
-        const card = document.createElement("div");
-
-        card.className = `card ${isVideo ? "video" : "image"} fade`;
-        card.style.animationDelay = `${i * 0.05}s`;
-
-        card.innerHTML = isVideo
-          ? `<video controls src="videos/${item.file}"></video><p>${item.desc}</p>`
-          : `<img src="images/${item.file}"><p>${item.desc}</p>`;
-
-        gallery.appendChild(card);
-      });
-    });
-
-  function filterGallery(type, e) {
-    document.querySelectorAll(".category-bar button")
-      .forEach(btn => btn.classList.remove("active"));
-    e.target.classList.add("active");
-
-    document.querySelectorAll(".card").forEach(card => {
-      card.style.display =
-        type === "all" || card.classList.contains(type) ? "block" : "none";
-    });
-  }
-
-  function showAbout() {
-    alert("Bibo’s Creation showcases creative projects, designs, and innovations.");
-  }
+function filterGallery(type){
+  document.querySelectorAll(".category-bar button").forEach(b=>b.classList.remove("active"));
+  event.target.classList.add("active");
+  document.querySelectorAll(".card").forEach(c=>{
+    c.style.display=(type==="all"||c.classList.contains(type))?"block":"none";
+  });
+}
 </script>
 
 </body>
