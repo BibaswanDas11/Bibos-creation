@@ -1,49 +1,71 @@
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial;background:#fafafa}
+body{
+  margin:0;
+  font-family:Arial, sans-serif;
+  background:#fafafa;
+}
+body.no-scroll{overflow:hidden}
 
 /* HEADER */
 header{
-  background:#ff6f61;color:#fff;
-  height:60px;display:flex;
-  align-items:center;padding:12px
+  background:#ff6f61;
+  color:#fff;
+  height:60px;
+  display:flex;
+  align-items:center;
+  padding:12px;
 }
 #menuBtn{font-size:28px;cursor:pointer}
 .header-center{flex:1;text-align:center;font-size:22px;font-weight:bold}
 .header-logo{height:40px}
 
-/* MENU */
+/* SIDE MENU */
 #sideMenu{
-  position:fixed;left:0;top:0;
+  position:fixed;
+  top:0;left:0;
   width:250px;height:100%;
-  background:#fff;padding:20px;
+  background:#fff;
+  padding:20px;
   transform:translateX(-260px);
-  transition:.3s;z-index:2000
+  transition:.3s;
+  z-index:4000;
 }
 #sideMenu.open{transform:translateX(0)}
-#sideMenu a{display:block;margin:12px 0;text-decoration:none;color:#333;font-size:18px}
+#sideMenu a{
+  display:block;
+  margin:12px 0;
+  text-decoration:none;
+  color:#333;
+  font-size:18px;
+}
 .privacy-link{
   font-size:12px;
   font-style:italic;
   color:#777;
   margin-top:30px;
-  filter:blur(0.5px);
+  filter:blur(.6px);
 }
 
-/* OVERLAY */
-#overlay{
-  position:fixed;inset:0;
+/* MENU OVERLAY */
+#menuOverlay{
+  position:fixed;
+  inset:0;
   background:rgba(0,0,0,.4);
-  display:none;z-index:1500
+  display:none;
+  z-index:3000;
 }
-#overlay.show{display:block}
+#menuOverlay.show{display:block}
 
 /* GALLERY */
 .title{text-align:center;margin:20px;font-size:26px}
 .category-bar{display:flex;gap:12px;justify-content:center}
 .category-bar button{
-  background:#ff6f61;color:#fff;
-  border:none;padding:10px 20px;
-  border-radius:30px;cursor:pointer
+  background:#ff6f61;
+  color:#fff;
+  border:none;
+  padding:10px 20px;
+  border-radius:30px;
+  cursor:pointer;
 }
 .category-bar button.active{background:#e74c3c}
 
@@ -51,56 +73,84 @@ header{
   padding:20px;
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-  gap:15px
+  gap:15px;
 }
 .card{
-  background:#fff;padding:10px;
+  background:#fff;
+  padding:10px;
   border-radius:12px;
   box-shadow:0 2px 6px rgba(0,0,0,.15);
-  animation:fade .4s
+  animation:fade .4s;
 }
-@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1}}
-.card img,.card video{width:100%;border-radius:12px}
+@keyframes fade{
+  from{opacity:0;transform:translateY(6px)}
+  to{opacity:1}
+}
+.card img,.card video{
+  width:100%;
+  border-radius:12px;
+}
 
-/* ABOUT FULLSCREEN */
-#aboutPage{
-  position:fixed;inset:0;
-  background:rgba(20,20,30,.95);
-  color:#fff;z-index:3000;
-  opacity:0;visibility:hidden;
-  transition:.5s
+/* ================= MODALS (FULLSCREEN) ================= */
+.modal{
+  position:fixed;
+  inset:0;
+  background:rgba(20,20,30,.6);
+  backdrop-filter:blur(14px);
+  z-index:999999;
+  opacity:0;
+  visibility:hidden;
+  transition:.4s;
 }
-#aboutPage.show{opacity:1;visibility:visible}
+.modal.show{
+  opacity:1;
+  visibility:visible;
+}
 
 .closeBtn{
-  position:absolute;top:20px;right:25px;
-  font-size:28px;cursor:pointer
+  position:absolute;
+  top:20px;
+  right:25px;
+  font-size:28px;
+  color:white;
+  cursor:pointer;
 }
 
-.about-content{
+.modal-content{
   height:100%;
+  max-width:800px;
+  margin:auto;
   display:flex;
   flex-direction:column;
   justify-content:center;
   align-items:center;
-  padding:30px;text-align:center
+  padding:30px;
+  color:white;
+  text-align:center;
 }
+.text-left{text-align:left}
 
-.about-img{
-  width:160px;border-radius:50%;
+.modal-img{
+  width:160px;
+  border-radius:50%;
 }
 
 .blur-line{
-  width:60%;height:1px;
+  width:60%;
+  height:1px;
   background:rgba(255,255,255,.4);
   margin:25px 0;
-  backdrop-filter:blur(10px)
 }
 
 /* OWNER PANEL */
 #ownerPanel{
   display:none;
-  margin:20px;padding:15px;
-  background:#fff8e1;border-radius:10px
+  margin:20px;
+  padding:15px;
+  background:#fff8e1;
+  border-radius:10px;
 }
-textarea{width:100%;height:90px}
+textarea{
+  width:100%;
+  height:90px;
+}
