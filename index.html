@@ -23,18 +23,17 @@
   <img src="Screenshot_20251221_214638_Chrome.jpg" class="header-logo">
 </header>
 
-<div id="overlay"></div>
+<!-- BACKDROP FOR MENU -->
+<div id="menuOverlay"></div>
 
 <!-- SIDE MENU -->
 <div id="sideMenu">
   <h3>Menu</h3>
-  <a href="#" onclick="openAbout();return false;">Home / About</a>
+  <a href="#" onclick="openAbout()">Home / About</a>
   <a href="https://wa.me/916290386950" target="_blank">WhatsApp</a>
-  <a href="#" onclick="ownerLogin();return false;">Register as Owner</a>
+  <a href="#" onclick="ownerLogin()">Register as Owner</a>
 
-  <a href="#" class="privacy-link" onclick="openPrivacy();return false;">
-    privacy policy
-  </a>
+  <a href="#" class="privacy-link" onclick="openPrivacy()">privacy policy</a>
 </div>
 
 <h2 class="title">Public Gallery</h2>
@@ -47,48 +46,6 @@
 
 <div id="gallery"></div>
 
-<!-- ===== ABOUT OVERLAY ===== -->
-<div id="aboutOverlay" class="overlay-page">
-  <span class="closeBtn" onclick="closeOverlays()">✕</span>
-
-  <div class="overlay-content">
-    <img src="images/your-photo.jpg" class="overlay-img">
-
-    <div class="blur-divider"></div>
-
-    <p>
-      Hi, I’m <b>Bibaswan Das</b>, a Class 9 student passionate about creativity,
-      electronics projects, and web design.
-      <br><br>
-      <b>Bibos Creation</b> is my personal space to showcase learning, experiments,
-      and imagination — while keeping my studies my first priority.
-    </p>
-  </div>
-</div>
-
-<!-- ===== PRIVACY POLICY OVERLAY ===== -->
-<div id="privacyOverlay" class="overlay-page">
-  <span class="closeBtn" onclick="closeOverlays()">✕</span>
-
-  <div class="overlay-content text-left">
-    <h2>Privacy Policy</h2>
-
-    <p>
-      Bibos Creation does not collect personal data from visitors.
-      No accounts, payments, or tracking systems are used.
-    </p>
-
-    <p>
-      Third-party services such as GitHub Pages and Google Search
-      may collect basic technical data as part of normal operation.
-    </p>
-
-    <p>
-      By using this site, you agree to this simple privacy policy.
-    </p>
-  </div>
-</div>
-
 <!-- OWNER PANEL -->
 <div id="ownerPanel">
   <h3>Owner Panel</h3>
@@ -98,45 +55,81 @@
   <textarea id="generated" readonly></textarea>
 </div>
 
+<!-- ================= ABOUT OVERLAY (END OF BODY) ================= -->
+<div id="aboutOverlay" class="modal">
+  <span class="closeBtn" onclick="closeModal()">✕</span>
+
+  <div class="modal-content">
+    <img src="images/your-photo.jpg" class="modal-img">
+
+    <div class="blur-line"></div>
+
+    <p>
+      Hi, I’m <b>Bibaswan Das</b>, a Class 9 student passionate about creativity,
+      electronics projects, and web design.
+      <br><br>
+      <b>Bibos Creation</b> is my platform to showcase learning, innovation,
+      and imagination — while keeping studies my top priority.
+    </p>
+  </div>
+</div>
+
+<!-- ================= PRIVACY POLICY OVERLAY ================= -->
+<div id="privacyOverlay" class="modal">
+  <span class="closeBtn" onclick="closeModal()">✕</span>
+
+  <div class="modal-content text-left">
+    <h2>Privacy Policy</h2>
+
+    <p>This website does not collect personal information from visitors.</p>
+    <p>No accounts, payments, or tracking systems are used.</p>
+    <p>
+      Third-party services such as GitHub Pages and Google Search
+      may collect basic technical data as part of normal operation.
+    </p>
+    <p>By using this site, you agree to this policy.</p>
+  </div>
+</div>
+
 <script>
 const menuBtn = document.getElementById("menuBtn");
 const sideMenu = document.getElementById("sideMenu");
-const overlay = document.getElementById("overlay");
+const menuOverlay = document.getElementById("menuOverlay");
 const ownerPanel = document.getElementById("ownerPanel");
 
 menuBtn.onclick = () => {
   sideMenu.classList.add("open");
-  overlay.classList.add("show");
+  menuOverlay.classList.add("show");
 };
 
-overlay.onclick = closeOverlays;
+menuOverlay.onclick = closeAll;
 
 function openAbout(){
-  closeMenus();
+  closeAll();
+  document.body.classList.add("no-scroll");
   document.getElementById("aboutOverlay").classList.add("show");
 }
 
 function openPrivacy(){
-  closeMenus();
+  closeAll();
+  document.body.classList.add("no-scroll");
   document.getElementById("privacyOverlay").classList.add("show");
 }
 
-function closeOverlays(){
-  document.querySelectorAll(".overlay-page").forEach(o=>{
-    o.classList.remove("show");
-  });
-  sideMenu.classList.remove("open");
-  overlay.classList.remove("show");
+function closeModal(){
+  document.body.classList.remove("no-scroll");
+  document.querySelectorAll(".modal").forEach(m => m.classList.remove("show"));
 }
 
-function closeMenus(){
+function closeAll(){
   sideMenu.classList.remove("open");
-  overlay.classList.remove("show");
+  menuOverlay.classList.remove("show");
+  closeModal();
 }
 
 function ownerLogin(){
   const pass = prompt("Enter owner password:");
-  ownerPanel.style.display = pass==="6290386950" ? "block" : "none";
+  ownerPanel.style.display = pass === "6290386950" ? "block" : "none";
 }
 
 function generateJSON(){
@@ -153,9 +146,9 @@ fetch("images.json?"+Date.now())
     const card=document.createElement("div");
     const isVideo=item.file.endsWith(".mp4");
     card.className="card "+(isVideo?"video":"image");
-    card.innerHTML=isVideo?
-      `<video controls src="videos/${item.file}"></video><p>${item.desc}</p>`:
-      `<img src="images/${item.file}"><p>${item.desc}</p>`;
+    card.innerHTML=isVideo
+      ? `<video controls src="videos/${item.file}"></video><p>${item.desc}</p>`
+      : `<img src="images/${item.file}"><p>${item.desc}</p>`;
     gallery.appendChild(card);
   });
 });
