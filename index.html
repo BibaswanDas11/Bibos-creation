@@ -148,7 +148,12 @@ fetch("images.json?"+Date.now())
     card.className="card "+(isVideo?"video":"image");
     card.innerHTML=isVideo
       ? `<video controls src="videos/${item.file}"></video><p>${item.desc}</p>`
-      : `<img src="images/${item.file}"><p>${item.desc}</p>`;
+      : : `<img 
+      src="images/${item.file}" 
+      alt="${item.alt || item.desc}"
+      loading="lazy"
+   >
+   <p>${item.desc}</p>`;;
     gallery.appendChild(card);
   });
 });
