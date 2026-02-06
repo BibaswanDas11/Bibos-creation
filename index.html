@@ -2,12 +2,13 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="google-site-verification" content="Alhr8fqmSjOB6sTEr2xxd4CZT4vbdTmqc1KHwRIO-qQ">
 
 <title>Bibos Creation | Projects, Designs & Innovations</title>
 
-<meta name="description" content="Bibos Creation showcases drawings, student projects, electronics models, and creative works by Bibaswan Das.">
-<meta name="keywords" content="drawings, sketches, student projects, electronics models, Bibos Creation">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Bibos Creation is a creative website by Bibaswan Das showcasing drawings, student projects, electronics models, and web designs.">
+<meta name="keywords" content="drawings, sketches, student projects, electronics projects, Bibos Creation">
 <meta name="author" content="Bibaswan Das">
 <meta name="robots" content="index, follow">
 
@@ -29,19 +30,10 @@
   <a href="#" onclick="openAbout()">Home / About</a>
   <a href="https://wa.me/916290386950" target="_blank">WhatsApp</a>
   <a href="#" onclick="ownerLogin()">Register as Owner</a>
-  <a href="#" class="privacy-link" onclick="openPrivacy()">Privacy Policy</a>
+  <a href="#" class="privacy-link" onclick="openPrivacy()">privacy policy</a>
 </div>
 
 <h2 class="title">Public Gallery</h2>
-
-<!-- SEARCH -->
-<div class="search-wrapper">
-  <div class="search-box">
-    <span>🔍</span>
-    <input type="text" id="searchInput" placeholder="Search drawings, projects...">
-    <span id="clearSearch">✕</span>
-  </div>
-</div>
 
 <div class="category-bar">
   <button onclick="filterGallery('all')" class="active">All</button>
@@ -51,11 +43,10 @@
 
 <div id="gallery"></div>
 
-<!-- OWNER PANEL -->
 <div id="ownerPanel">
   <h3>Owner Panel</h3>
   <input type="text" id="fileName" placeholder="file.jpg or video.mp4">
-  <input type="text" id="fileDesc" placeholder="description / alt text">
+  <input type="text" id="fileDesc" placeholder="description">
   <button onclick="generateJSON()">Generate JSON</button>
   <textarea id="generated" readonly></textarea>
 </div>
@@ -63,27 +54,15 @@
 <!-- ABOUT -->
 <div id="aboutOverlay" class="modal">
   <span class="closeBtn" onclick="closeModal()">✕</span>
-  <div class="modal-content about-box">
-    <img src="images/your-photo.jpg" alt="Bibaswan Das" class="about-img">
-
-    <h2>About Me</h2>
-
+  <div class="modal-content">
+    <img src="images/your-photo.jpg" class="modal-img">
+    <div class="blur-line"></div>
     <p>
-      Hi, I’m <b>Bibaswan Das</b>, a Class 9 student with a strong passion for
-      creativity, drawing, electronics projects, and web design.
-    </p>
-
-    <p>
-      <b>Bibos Creation</b> is my personal platform where I showcase my drawings,
-      handmade models, student projects, and creative experiments.  
-      This website reflects my learning journey, curiosity, and continuous
-      improvement in both art and technology.
-    </p>
-
-    <p>
-      My goal is to learn, innovate, and share knowledge while maintaining a
-      balance between academics and creativity. All content on this website is
-      created with originality and genuine interest.
+      Hi, I’m <b>Bibaswan Das</b>, a Class 9 student passionate about drawing,
+      creativity, electronics projects, and web design.
+      <br><br>
+      <b>Bibos Creation</b> is my personal platform where I share my artworks,
+      experiments, and learning journey — while keeping academics my priority.
     </p>
   </div>
 </div>
@@ -91,35 +70,12 @@
 <!-- PRIVACY -->
 <div id="privacyOverlay" class="modal">
   <span class="closeBtn" onclick="closeModal()">✕</span>
-  <div class="modal-content privacy-box">
+  <div class="modal-content text-left">
     <h2>Privacy Policy</h2>
-
-    <p>
-      Bibos Creation respects the privacy of its visitors. This website does not
-      require users to create accounts or submit personal information.
-    </p>
-
-    <p>
-      We may use third-party services such as Google AdSense and Google Analytics
-      in the future. These services may use cookies or similar technologies to
-      display relevant advertisements and analyze website traffic.
-    </p>
-
-    <p>
-      Third-party ad servers or networks use technologies like cookies, JavaScript,
-      or Web Beacons in their ads that appear on Bibos Creation, which are sent
-      directly to users’ browsers.
-    </p>
-
-    <p>
-      Bibos Creation has no control over these cookies used by third-party advertisers.
-      Visitors are advised to consult the respective privacy policies of these
-      services for more detailed information.
-    </p>
-
-    <p>
-      By using this website, you consent to this Privacy Policy and agree to its terms.
-    </p>
+    <p>This website does not collect personal information from visitors.</p>
+    <p>No user accounts, payments, or direct data collection systems are used.</p>
+    <p>Third-party services such as GitHub Pages and Google may collect limited technical data.</p>
+    <p>This policy complies with Google AdSense requirements.</p>
   </div>
 </div>
 
@@ -127,8 +83,8 @@
 const menuBtn = document.getElementById("menuBtn");
 const sideMenu = document.getElementById("sideMenu");
 const menuOverlay = document.getElementById("menuOverlay");
-const gallery = document.getElementById("gallery");
 const ownerPanel = document.getElementById("ownerPanel");
+const gallery = document.getElementById("gallery");
 
 menuBtn.onclick = () => {
   sideMenu.classList.add("open");
@@ -136,9 +92,11 @@ menuBtn.onclick = () => {
 };
 menuOverlay.onclick = closeAll;
 
-function openAbout(){ closeAll(); aboutOverlay.classList.add("show"); }
-function openPrivacy(){ closeAll(); privacyOverlay.classList.add("show"); }
+function openAbout(){ closeAll(); document.body.classList.add("no-scroll"); aboutOverlay.classList.add("show"); }
+function openPrivacy(){ closeAll(); document.body.classList.add("no-scroll"); privacyOverlay.classList.add("show"); }
+
 function closeModal(){
+  document.body.classList.remove("no-scroll");
   document.querySelectorAll(".modal").forEach(m=>m.classList.remove("show"));
 }
 function closeAll(){
@@ -148,30 +106,23 @@ function closeAll(){
 }
 
 function ownerLogin(){
-  const pass = prompt("Enter owner password:");
-  ownerPanel.style.display = pass === "6290386950" ? "block" : "none";
+  ownerPanel.style.display = prompt("Enter owner password:") === "6290386950" ? "block" : "none";
 }
 
 function generateJSON(){
-  generated.value = `{
-  "file":"${fileName.value}",
-  "desc":"${fileDesc.value}"
-},`;
+  generated.value = `{\n  "file": "${fileName.value}",\n  "desc": "${fileDesc.value}"\n},`;
 }
 
 fetch("images.json?"+Date.now())
 .then(r=>r.json())
 .then(data=>{
   data.forEach(item=>{
-    const isVideo = item.file.endsWith(".mp4");
-    const card = document.createElement("div");
-    card.className = "card " + (isVideo?"video":"image");
-    card.dataset.text = item.desc.toLowerCase();
-
+    const isVideo=item.file.endsWith(".mp4");
+    const card=document.createElement("div");
+    card.className="card "+(isVideo?"video":"image");
     card.innerHTML = isVideo
       ? `<video controls src="videos/${item.file}"></video><p>${item.desc}</p>`
       : `<img src="images/${item.file}" alt="${item.desc}"><p>${item.desc}</p>`;
-
     gallery.appendChild(card);
   });
 });
@@ -180,25 +131,9 @@ function filterGallery(type){
   document.querySelectorAll(".category-bar button").forEach(b=>b.classList.remove("active"));
   event.target.classList.add("active");
   document.querySelectorAll(".card").forEach(c=>{
-    c.style.display = (type==="all"||c.classList.contains(type))?"block":"none";
+    c.style.display=(type==="all"||c.classList.contains(type))?"block":"none";
   });
 }
-
-const searchInput = document.getElementById("searchInput");
-const clearSearch = document.getElementById("clearSearch");
-
-searchInput.oninput = () => {
-  const q = searchInput.value.toLowerCase();
-  clearSearch.style.display = q ? "block" : "none";
-  document.querySelectorAll(".card").forEach(c=>{
-    c.style.display = c.dataset.text.includes(q) ? "block" : "none";
-  });
-};
-clearSearch.onclick = () => {
-  searchInput.value="";
-  clearSearch.style.display="none";
-  document.querySelectorAll(".card").forEach(c=>c.style.display="block");
-};
 </script>
 
 </body>
