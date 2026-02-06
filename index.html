@@ -164,36 +164,24 @@ function filterGallery(type){
     card.style.display = text.includes(q) ? "block" : "none";
   });
 }
-
-function clearSearch(){
-  const input = document.getElementById("searchInput");
-  input.value = "";
-  searchGallery();
-}
-  searchInput.addEventListener("input",()=>{
-  clearSearch.style.display = searchInput.value ? "block" : "none";
-});
+window.addEventListener("DOMContentLoaded", () => {
   const searchInput = document.getElementById("searchInput");
 
-searchInput.addEventListener("input", function () {
-  const query = this.value.toLowerCase();
+  if (!searchInput) {
+    console.error("Search input not found");
+    return;
+  }
 
-  document.querySelectorAll(".card").forEach(card => {
-    const text = card.getAttribute("data-text");
+  searchInput.addEventListener("input", () => {
+    const q = searchInput.value.toLowerCase();
 
-    if (!text || text.includes(query)) {
-      card.style.display = "block";
-    } else {
-      card.style.display = "none";
-    }
+    document.querySelectorAll(".card").forEach(card => {
+      const text = card.dataset.text || "";
+      card.style.display = text.includes(q) ? "block" : "none";
+    });
   });
 });
 
-clearSearch.onclick=()=>{
-  searchInput.value="";
-  clearSearch.style.display="none";
-  searchInput.focus();
-};
   
 </script>
 
