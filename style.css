@@ -4,110 +4,153 @@ body{
   font-family:Arial, sans-serif;
   background:#fafafa;
 }
-.no-scroll{overflow:hidden}
+body.no-scroll{overflow:hidden}
 
+/* HEADER */
 header{
   background:#ff6f61;
-  color:white;
-  padding:12px;
+  color:#fff;
+  height:60px;
   display:flex;
   align-items:center;
+  padding:12px;
 }
-#menuBtn{font-size:26px;cursor:pointer}
+#menuBtn{font-size:28px;cursor:pointer}
 .header-center{flex:1;text-align:center;font-size:22px;font-weight:bold}
+.header-logo{height:40px}
 
-/* SEARCH */
-.search-bar{
-  position:sticky;
-  top:0;
-  z-index:1000;
-  background:white;
-  padding:10px;
-}
-.search-bar input{
-  width:100%;
-  padding:10px;
-  border-radius:20px;
-  border:1px solid #ccc;
-}
-
-/* MENU */
+/* SIDE MENU */
 #sideMenu{
   position:fixed;
-  left:-260px;
-  top:0;
-  width:250px;
-  height:100%;
-  background:white;
+  top:0;left:0;
+  width:250px;height:100%;
+  background:#fff;
   padding:20px;
+  transform:translateX(-260px);
   transition:.3s;
-  z-index:2000;
+  z-index:4000;
 }
-#sideMenu.open{left:0}
-#sideMenu a{display:block;margin:12px 0;color:#333;text-decoration:none}
+#sideMenu.open{transform:translateX(0)}
+#sideMenu a{
+  display:block;
+  margin:12px 0;
+  text-decoration:none;
+  color:#333;
+  font-size:18px;
+}
+.privacy-link{
+  font-size:12px;
+  font-style:italic;
+  color:#777;
+  margin-top:30px;
+  filter:blur(.6px);
+}
 
+/* MENU OVERLAY */
 #menuOverlay{
-  display:none;
   position:fixed;
   inset:0;
   background:rgba(0,0,0,.4);
+  display:none;
+  z-index:3000;
 }
 #menuOverlay.show{display:block}
 
-/* TITLE */
-.title{text-align:center;margin:20px 0}
-
-/* CATEGORY */
-.category-bar{
-  display:flex;
-  justify-content:center;
-  gap:10px;
-}
+/* GALLERY */
+.title{text-align:center;margin:20px;font-size:26px}
+.category-bar{display:flex;gap:12px;justify-content:center}
 .category-bar button{
-  padding:8px 14px;
-  border:none;
-  border-radius:20px;
   background:#ff6f61;
-  color:white;
+  color:#fff;
+  border:none;
+  padding:10px 20px;
+  border-radius:30px;
   cursor:pointer;
 }
 .category-bar button.active{background:#e74c3c}
 
-/* GALLERY */
 #gallery{
   padding:20px;
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
   gap:15px;
 }
 .card{
-  background:white;
-  border-radius:12px;
+  background:#fff;
   padding:10px;
+  border-radius:12px;
   box-shadow:0 2px 6px rgba(0,0,0,.15);
-  cursor:pointer;
-  transition:.2s;
+  animation:fade .4s;
 }
-.card:hover{transform:scale(1.03)}
-.card img,video{width:100%;border-radius:12px}
-.card p{text-align:center}
+@keyframes fade{
+  from{opacity:0;transform:translateY(6px)}
+  to{opacity:1}
+}
+.card img,.card video{
+  width:100%;
+  border-radius:12px;
+}
 
-/* MODAL */
+/* ================= MODALS (FULLSCREEN) ================= */
 .modal{
-  display:none;
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,.6);
-  z-index:3000;
-  padding:20px;
+  background:rgba(20,20,30,.6);
+  backdrop-filter:blur(14px);
+  z-index:999999;
+  opacity:0;
+  visibility:hidden;
+  transition:.4s;
 }
-.modal.show{display:flex;flex-direction:column;align-items:center;justify-content:center}
-.closeBtn{color:white;font-size:26px;align-self:flex-end;cursor:pointer}
+.modal.show{
+  opacity:1;
+  visibility:visible;
+}
 
-#viewer img{max-width:90%;border-radius:12px}
-#viewer p{color:white}
+.closeBtn{
+  position:absolute;
+  top:20px;
+  right:25px;
+  font-size:28px;
+  color:white;
+  cursor:pointer;
+}
 
+.modal-content{
+  height:100%;
+  max-width:800px;
+  margin:auto;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  padding:30px;
+  color:white;
+  text-align:center;
+}
+.text-left{text-align:left}
+
+.modal-img{
+  width:160px;
+  border-radius:50%;
+}
+
+.blur-line{
+  width:60%;
+  height:1px;
+  background:rgba(255,255,255,.4);
+  margin:25px 0;
+}
+
+/* OWNER PANEL */
+#ownerPanel{
+  display:none;
+  margin:20px;
+  padding:15px;
+  background:#fff8e1;
+  border-radius:10px;
+}
 textarea{
-  width:90%;
-  height:60vh;
+  width:100%;
+  height:90px;
 }
