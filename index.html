@@ -138,6 +138,7 @@ fetch("images.json?"+Date.now())
     const isVideo=item.file.endsWith(".mp4");
     const card=document.createElement("div");
     card.className="card "+(isVideo?"video":"image");
+    card.dataset.text = item.desc.toLowerCase();
     card.innerHTML = isVideo
       ? `<video controls src="videos/${item.file}"></video><p>${item.desc}</p>`
       : `<img src="images/${item.file}" alt="${item.desc}"><p>${item.desc}</p>`;
