@@ -98,7 +98,6 @@
 </div>
 
 <script>
-alert("JS is running");
 const menuBtn = document.getElementById("menuBtn");
 const sideMenu = document.getElementById("sideMenu");
 const menuOverlay = document.getElementById("menuOverlay");
@@ -155,16 +154,7 @@ function filterGallery(type){
     c.style.display=(type==="all"||c.classList.contains(type))?"block":"none";
   });
 }
-  function searchGallery(){
-  const q = document.getElementById("searchInput").value.toLowerCase();
-  const clearBtn = document.getElementById("clearSearch");
-  clearBtn.style.display = q ? "block" : "none";
-
-  document.querySelectorAll(".card").forEach(card=>{
-    const text = card.innerText.toLowerCase();
-    card.style.display = text.includes(q) ? "block" : "none";
-  });
-}
+  
 window.addEventListener("DOMContentLoaded", () => {
   const searchInput = document.getElementById("searchInput");
 
