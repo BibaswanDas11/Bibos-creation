@@ -172,12 +172,28 @@ function clearSearch(){
   searchInput.addEventListener("input",()=>{
   clearSearch.style.display = searchInput.value ? "block" : "none";
 });
+  const searchInput = document.getElementById("searchInput");
+
+searchInput.addEventListener("input", function () {
+  const query = this.value.toLowerCase();
+
+  document.querySelectorAll(".card").forEach(card => {
+    const text = card.getAttribute("data-text");
+
+    if (!text || text.includes(query)) {
+      card.style.display = "block";
+    } else {
+      card.style.display = "none";
+    }
+  });
+});
 
 clearSearch.onclick=()=>{
   searchInput.value="";
   clearSearch.style.display="none";
   searchInput.focus();
 };
+  
 </script>
 
 </body>
