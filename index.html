@@ -36,6 +36,16 @@
 <h2 class="title">Public Gallery</h2>
 
 <div class="category-bar">
+  <!-- SEARCH BAR -->
+<div class="search-wrapper">
+  <input
+    type="text"
+    id="searchInput"
+    placeholder="Search drawings, sketches, projects…"
+    oninput="searchGallery()"
+  >
+  <span id="clearSearch" onclick="clearSearch()">✕</span>
+</div>
   <button onclick="filterGallery('all')" class="active">All</button>
   <button onclick="filterGallery('image')">Images</button>
   <button onclick="filterGallery('video')">Videos</button>
@@ -133,6 +143,22 @@ function filterGallery(type){
   document.querySelectorAll(".card").forEach(c=>{
     c.style.display=(type==="all"||c.classList.contains(type))?"block":"none";
   });
+}
+  function searchGallery(){
+  const q = document.getElementById("searchInput").value.toLowerCase();
+  const clearBtn = document.getElementById("clearSearch");
+  clearBtn.style.display = q ? "block" : "none";
+
+  document.querySelectorAll(".card").forEach(card=>{
+    const text = card.innerText.toLowerCase();
+    card.style.display = text.includes(q) ? "block" : "none";
+  });
+}
+
+function clearSearch(){
+  const input = document.getElementById("searchInput");
+  input.value = "";
+  searchGallery();
 }
 </script>
 
