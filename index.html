@@ -158,6 +158,15 @@ function clearSearch(){
   input.value = "";
   searchGallery();
 }
+  searchInput.addEventListener("input",()=>{
+  clearSearch.style.display = searchInput.value ? "block" : "none";
+});
+
+clearSearch.onclick=()=>{
+  searchInput.value="";
+  clearSearch.style.display="none";
+  searchInput.focus();
+};
 </script>
 
 </body>
