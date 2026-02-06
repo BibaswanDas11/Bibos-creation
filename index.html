@@ -23,8 +23,10 @@
   <img src="Screenshot_20251221_214638_Chrome.jpg" class="header-logo">
 </header>
 
+<!-- BACKDROP FOR MENU -->
 <div id="menuOverlay"></div>
 
+<!-- SIDE MENU -->
 <div id="sideMenu">
   <h3>Menu</h3>
   <a href="#" onclick="openAbout()">Home / About</a>
@@ -37,8 +39,11 @@
 
 <!-- 🔍 SEARCH BAR -->
 <div class="search-bar">
-  <input type="text" id="searchInput" placeholder="Search drawings, projects...">
-  <span id="clearSearch">✕</span>
+  <div class="search-box">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="searchInput" placeholder="Search drawings, projects...">
+    <span id="clearSearch">✕</span>
+  </div>
 </div>
 
 <div class="category-bar">
@@ -49,18 +54,13 @@
 
 <div id="gallery"></div>
 
+<!-- OWNER PANEL -->
 <div id="ownerPanel">
   <h3>Owner Panel</h3>
   <input type="text" id="fileName" placeholder="file.jpg or video.mp4">
   <input type="text" id="fileDesc" placeholder="description">
   <button onclick="generateJSON()">Generate JSON</button>
   <textarea id="generated" readonly></textarea>
-</div>
-
-<!-- IMAGE PREVIEW MODAL -->
-<div id="imagePreview" class="modal">
-  <span class="closeBtn" onclick="closeImage()">✕</span>
-  <img id="previewImg" class="preview-img">
 </div>
 
 <!-- ABOUT -->
@@ -72,6 +72,8 @@
     <p>
       Hi, I’m <b>Bibaswan Das</b>, a Class 9 student passionate about creativity,
       electronics projects, and web design.
+      <br><br>
+      <b>Bibos Creation</b> is my platform to showcase learning and innovation.
     </p>
   </div>
 </div>
@@ -82,6 +84,8 @@
   <div class="modal-content text-left">
     <h2>Privacy Policy</h2>
     <p>This website does not collect personal information.</p>
+    <p>No accounts, payments, or tracking systems are used.</p>
+    <p>GitHub Pages and Google may collect basic technical data.</p>
   </div>
 </div>
 
@@ -96,18 +100,26 @@ menuBtn.onclick = () => {
   sideMenu.classList.add("open");
   menuOverlay.classList.add("show");
 };
+
 menuOverlay.onclick = closeAll;
 
-function openAbout(){closeAll();showModal("aboutOverlay")}
-function openPrivacy(){closeAll();showModal("privacyOverlay")}
-function showModal(id){
+function openAbout(){
+  closeAll();
   document.body.classList.add("no-scroll");
-  document.getElementById(id).classList.add("show");
+  aboutOverlay.classList.add("show");
 }
+
+function openPrivacy(){
+  closeAll();
+  document.body.classList.add("no-scroll");
+  privacyOverlay.classList.add("show");
+}
+
 function closeModal(){
   document.body.classList.remove("no-scroll");
-  document.querySelectorAll(".modal").forEach(m=>m.classList.remove("show"));
+  document.querySelectorAll(".modal").forEach(m => m.classList.remove("show"));
 }
+
 function closeAll(){
   sideMenu.classList.remove("open");
   menuOverlay.classList.remove("show");
@@ -115,60 +127,63 @@ function closeAll(){
 }
 
 function ownerLogin(){
-  ownerPanel.style.display = prompt("Enter owner password:") === "6290386950" ? "block" : "none";
+  const pass = prompt("Enter owner password:");
+  ownerPanel.style.display = pass === "6290386950" ? "block" : "none";
 }
 
-fetch("images.json?"+Date.now())
-.then(r=>r.json())
-.then(data=>{
-  data.forEach(item=>{
-    const isVideo=item.file.endsWith(".mp4");
-    const card=document.createElement("div");
-    card.className="card "+(isVideo?"video":"image");
-    card.dataset.text=item.desc.toLowerCase();
+function generateJSON(){
+  generated.value = `{
+  "file": "${fileName.value}",
+  "desc": "${fileDesc.value}"
+},`;
+}
 
-    card.innerHTML=isVideo
+/* LOAD GALLERY */
+fetch("images.json?" + Date.now())
+.then(r => r.json())
+.then(data => {
+  data.forEach(item => {
+    const isVideo = item.file.endsWith(".mp4");
+    const card = document.createElement("div");
+    card.className = "card " + (isVideo ? "video" : "image");
+    card.setAttribute("data-text", item.desc.toLowerCase());
+
+    card.innerHTML = isVideo
       ? `<video controls src="videos/${item.file}"></video><p>${item.desc}</p>`
-      : `<img src="images/${item.file}" onclick="openImage(this.src)"><p>${item.desc}</p>`;
+      : `<img src="images/${item.file}" alt="${item.desc}"><p>${item.desc}</p>`;
+
     gallery.appendChild(card);
   });
 });
 
-/* SEARCH */
-const searchInput=document.getElementById("searchInput");
-const clearBtn=document.getElementById("clearSearch");
-
-searchInput.oninput=()=>{
-  const q=searchInput.value.toLowerCase();
-  clearBtn.style.display=q?"block":"none";
-  document.querySelectorAll(".card").forEach(c=>{
-    c.style.display=c.dataset.text.includes(q)?"block":"none";
-  });
-};
-clearBtn.onclick=()=>{
-  searchInput.value="";
-  clearBtn.style.display="none";
-  document.querySelectorAll(".card").forEach(c=>c.style.display="block");
-};
-
-/* IMAGE PREVIEW */
-function openImage(src){
-  document.getElementById("previewImg").src=src;
-  document.getElementById("imagePreview").classList.add("show");
-  document.body.classList.add("no-scroll");
-}
-function closeImage(){
-  document.getElementById("imagePreview").classList.remove("show");
-  document.body.classList.remove("no-scroll");
-}
-
+/* CATEGORY FILTER */
 function filterGallery(type){
   document.querySelectorAll(".category-bar button").forEach(b=>b.classList.remove("active"));
   event.target.classList.add("active");
+
   document.querySelectorAll(".card").forEach(c=>{
-    c.style.display=(type==="all"||c.classList.contains(type))?"block":"none";
+    c.style.display = (type==="all" || c.classList.contains(type)) ? "block" : "none";
   });
 }
+
+/* SEARCH */
+const searchInput = document.getElementById("searchInput");
+const clearSearch = document.getElementById("clearSearch");
+
+searchInput.addEventListener("input", () => {
+  const q = searchInput.value.toLowerCase();
+  clearSearch.style.display = q ? "block" : "none";
+
+  document.querySelectorAll(".card").forEach(c => {
+    c.style.display = c.dataset.text.includes(q) ? "block" : "none";
+  });
+});
+
+clearSearch.onclick = () => {
+  searchInput.value = "";
+  clearSearch.style.display = "none";
+  document.querySelectorAll(".card").forEach(c => c.style.display = "block");
+};
 </script>
 
 </body>
