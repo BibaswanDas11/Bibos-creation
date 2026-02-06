@@ -2,15 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="google-site-verification" content="Alhr8fqmSjOB6sTEr2xxd4CZT4vbdTmqc1KHwRIO-qQ">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Bibos Creation | Projects, Designs & Innovations</title>
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Bibos Creation is a creative website by Bibaswan Das showcasing student projects, electronics models, web designs, and innovative ideas.">
-<meta name="keywords" content="Bibos Creation, Bibaswan Das, student projects, electronics projects, web design">
-<meta name="author" content="Bibaswan Das">
-<meta name="robots" content="index, follow">
 
 <link rel="stylesheet" href="style.css">
 </head>
@@ -23,10 +17,8 @@
   <img src="Screenshot_20251221_214638_Chrome.jpg" class="header-logo">
 </header>
 
-<!-- BACKDROP FOR MENU -->
 <div id="menuOverlay"></div>
 
-<!-- SIDE MENU -->
 <div id="sideMenu">
   <h3>Menu</h3>
   <a href="#" onclick="openAbout()">Home / About</a>
@@ -37,10 +29,10 @@
 
 <h2 class="title">Public Gallery</h2>
 
-<!-- 🔍 SEARCH BAR -->
-<div class="search-bar">
+<!-- SEARCH BAR -->
+<div class="search-wrapper">
   <div class="search-box">
-    <span class="search-icon">🔍</span>
+    <span>🔍</span>
     <input type="text" id="searchInput" placeholder="Search drawings, projects...">
     <span id="clearSearch">✕</span>
   </div>
@@ -67,14 +59,7 @@
 <div id="aboutOverlay" class="modal">
   <span class="closeBtn" onclick="closeModal()">✕</span>
   <div class="modal-content">
-    <img src="images/your-photo.jpg" class="modal-img">
-    <div class="blur-line"></div>
-    <p>
-      Hi, I’m <b>Bibaswan Das</b>, a Class 9 student passionate about creativity,
-      electronics projects, and web design.
-      <br><br>
-      <b>Bibos Creation</b> is my platform to showcase learning and innovation.
-    </p>
+    <p>Hi, I’m <b>Bibaswan Das</b>. Welcome to Bibos Creation.</p>
   </div>
 </div>
 
@@ -83,9 +68,7 @@
   <span class="closeBtn" onclick="closeModal()">✕</span>
   <div class="modal-content text-left">
     <h2>Privacy Policy</h2>
-    <p>This website does not collect personal information.</p>
-    <p>No accounts, payments, or tracking systems are used.</p>
-    <p>GitHub Pages and Google may collect basic technical data.</p>
+    <p>No personal data is collected.</p>
   </div>
 </div>
 
@@ -93,8 +76,8 @@
 const menuBtn = document.getElementById("menuBtn");
 const sideMenu = document.getElementById("sideMenu");
 const menuOverlay = document.getElementById("menuOverlay");
-const ownerPanel = document.getElementById("ownerPanel");
 const gallery = document.getElementById("gallery");
+const ownerPanel = document.getElementById("ownerPanel");
 
 menuBtn.onclick = () => {
   sideMenu.classList.add("open");
@@ -105,21 +88,15 @@ menuOverlay.onclick = closeAll;
 
 function openAbout(){
   closeAll();
-  document.body.classList.add("no-scroll");
-  aboutOverlay.classList.add("show");
+  document.getElementById("aboutOverlay").classList.add("show");
 }
-
 function openPrivacy(){
   closeAll();
-  document.body.classList.add("no-scroll");
-  privacyOverlay.classList.add("show");
+  document.getElementById("privacyOverlay").classList.add("show");
 }
-
 function closeModal(){
-  document.body.classList.remove("no-scroll");
-  document.querySelectorAll(".modal").forEach(m => m.classList.remove("show"));
+  document.querySelectorAll(".modal").forEach(m=>m.classList.remove("show"));
 }
-
 function closeAll(){
   sideMenu.classList.remove("open");
   menuOverlay.classList.remove("show");
@@ -133,20 +110,19 @@ function ownerLogin(){
 
 function generateJSON(){
   generated.value = `{
-  "file": "${fileName.value}",
-  "desc": "${fileDesc.value}"
+  "file":"${fileName.value}",
+  "desc":"${fileDesc.value}"
 },`;
 }
 
-/* LOAD GALLERY */
-fetch("images.json?" + Date.now())
-.then(r => r.json())
-.then(data => {
-  data.forEach(item => {
+fetch("images.json?"+Date.now())
+.then(r=>r.json())
+.then(data=>{
+  data.forEach(item=>{
     const isVideo = item.file.endsWith(".mp4");
     const card = document.createElement("div");
-    card.className = "card " + (isVideo ? "video" : "image");
-    card.setAttribute("data-text", item.desc.toLowerCase());
+    card.className = "card " + (isVideo?"video":"image");
+    card.dataset.text = item.desc.toLowerCase();
 
     card.innerHTML = isVideo
       ? `<video controls src="videos/${item.file}"></video><p>${item.desc}</p>`
@@ -156,33 +132,29 @@ fetch("images.json?" + Date.now())
   });
 });
 
-/* CATEGORY FILTER */
 function filterGallery(type){
   document.querySelectorAll(".category-bar button").forEach(b=>b.classList.remove("active"));
   event.target.classList.add("active");
-
   document.querySelectorAll(".card").forEach(c=>{
-    c.style.display = (type==="all" || c.classList.contains(type)) ? "block" : "none";
+    c.style.display = (type==="all"||c.classList.contains(type))?"block":"none";
   });
 }
 
-/* SEARCH */
 const searchInput = document.getElementById("searchInput");
 const clearSearch = document.getElementById("clearSearch");
 
-searchInput.addEventListener("input", () => {
+searchInput.oninput = () => {
   const q = searchInput.value.toLowerCase();
   clearSearch.style.display = q ? "block" : "none";
-
-  document.querySelectorAll(".card").forEach(c => {
+  document.querySelectorAll(".card").forEach(c=>{
     c.style.display = c.dataset.text.includes(q) ? "block" : "none";
   });
-});
+};
 
 clearSearch.onclick = () => {
-  searchInput.value = "";
-  clearSearch.style.display = "none";
-  document.querySelectorAll(".card").forEach(c => c.style.display = "block");
+  searchInput.value="";
+  clearSearch.style.display="none";
+  document.querySelectorAll(".card").forEach(c=>c.style.display="block");
 };
 </script>
 
