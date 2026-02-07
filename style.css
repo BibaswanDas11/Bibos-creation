@@ -340,3 +340,38 @@ textarea{width:100%;height:90px}
   gap: 14px;
   margin: 10px 0 25px;
 }
+/* ===== IMAGE FULLSCREEN VIEW ===== */
+.image-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.85);
+  backdrop-filter:blur(10px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  opacity:0;
+  visibility:hidden;
+  transition:.3s ease;
+  z-index:10000;
+}
+
+.image-overlay.show{
+  opacity:1;
+  visibility:visible;
+}
+
+.image-overlay img{
+  max-width:92vw;
+  max-height:88vh;
+  border-radius:14px;
+  box-shadow:0 25px 60px rgba(0,0,0,.6);
+}
+
+.image-close{
+  position:absolute;
+  top:20px;
+  right:26px;
+  font-size:32px;
+  color:white;
+  cursor:pointer;
+}
