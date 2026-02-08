@@ -30,37 +30,31 @@
   <a href="#" onclick="openAbout()">Home / About</a>
   <a href="https://wa.me/916290386950" target="_blank">WhatsApp</a>
   <a href="#" onclick="ownerLogin()">Register as Owner</a>
-  <a href="#" class="privacy-link" onclick="openPrivacy()">privacy policy</a>
+  <a href="#" class="privacy-link" onclick="openPrivacy()">Privacy Policy</a>
 </div>
 
 <h2 class="title">Public Gallery</h2>
 
-  <!-- SEARCH BAR -->
+<!-- SEARCH BAR -->
 <div class="search-bar">
   <div class="search-box">
     <span style="margin-right:10px;">🔍</span>
-    <input
-      type="text"
-      id="searchInput"
-      placeholder="Search drawings, projects..."
-      style="flex:1;border:none;background:transparent;color:white;font-size:16px;outline:none;"
-    >
-    <span
-      id="clearSearch"
-      style="display:none;cursor:pointer;margin-left:10px;"
-    >✕</span>
+    <input id="searchInput" type="text" placeholder="Search drawings, projects...">
+    <span id="clearSearch">✕</span>
   </div>
 </div>
+
+<!-- CATEGORY BAR -->
 <div class="category-bar">
-
-
   <button onclick="filterGallery('all')" class="active">All</button>
   <button onclick="filterGallery('image')">Images</button>
   <button onclick="filterGallery('video')">Videos</button>
 </div>
 
+<!-- GALLERY -->
 <div id="gallery"></div>
 
+<!-- OWNER PANEL -->
 <div id="ownerPanel">
   <h3>Owner Panel</h3>
   <input type="text" id="fileName" placeholder="file.jpg or video.mp4">
@@ -78,9 +72,6 @@
     <p>
       Hi, I’m <b>Bibaswan Das</b>, a Class 9 student passionate about drawing,
       creativity, electronics projects, and web design.
-      <br><br>
-      <b>Bibos Creation</b> is my personal platform where I share my artworks,
-      experiments, and learning journey — while keeping academics my priority.
     </p>
   </div>
 </div>
@@ -93,8 +84,13 @@
     <p>This website does not collect personal information from visitors.</p>
     <p>No user accounts, payments, or direct data collection systems are used.</p>
     <p>Third-party services such as GitHub Pages and Google may collect limited technical data.</p>
-    <p>This policy complies with Google AdSense requirements.</p>
   </div>
+</div>
+
+<!-- IMAGE FULLSCREEN VIEW -->
+<div id="imageOverlay" class="image-overlay">
+  <span class="image-close" onclick="closeImage()">✕</span>
+  <img id="fullscreenImage">
 </div>
 
 <script>
@@ -104,6 +100,7 @@ const menuOverlay = document.getElementById("menuOverlay");
 const ownerPanel = document.getElementById("ownerPanel");
 const gallery = document.getElementById("gallery");
 
+/* MENU */
 menuBtn.onclick = () => {
   sideMenu.classList.add("open");
   menuOverlay.classList.add("show");
@@ -123,55 +120,57 @@ function closeAll(){
   closeModal();
 }
 
+/* OWNER */
 function ownerLogin(){
-  ownerPanel.style.display = prompt("Enter owner password:") === "6290386950" ? "block" : "none";
+  ownerPanel.style.display =
+    prompt("Enter owner password:") === "6290386950" ? "block" : "none";
 }
-
 function generateJSON(){
   generated.value = `{\n  "file": "${fileName.value}",\n  "desc": "${fileDesc.value}"\n},`;
 }
 
-fetch("images.json?"+Date.now())
-.then(r=>r.json())
-.then(data=>{
-  data.forEach(item=>{
-    const isVideo=item.file.endsWith(".mp4");
-    const card=document.createElement("div");
-    card.className="card "+(isVideo?"video":"image");
-    card.setAttribute("data-text", item.desc.toLowerCase());
+/* LOAD GALLERY */
+fetch("images.json?" + Date.now())
+.then(r => r.json())
+.then(data => {
+  gallery.innerHTML = "";
+  data.forEach(item => {
+    const file = item.file.toLowerCase();
+    const isVideo = file.endsWith(".mp4") || file.endsWith(".webm");
+    const isImage = /\.(jpg|jpeg|png|webp|gif)$/.test(file);
+    if (!isVideo && !isImage) return;
+
+    const card = document.createElement("div");
+    card.className = "card " + (isVideo ? "video" : "image");
     card.dataset.text = item.desc.toLowerCase();
-    card.innerHTML = isVideo
-      ? `<video controls src="videos/${item.file}"></video><p>${item.desc}</p>`
-      :'<img src="images/${item.file}" alt="${item.desc}">';
+
+    if (isVideo) {
+      card.innerHTML = `<video controls src="videos/${item.file}"></video><p>${item.desc}</p>`;
+    } else {
+      card.innerHTML = `<img src="images/${item.file}" alt="${item.desc}" onclick="openImage(this.src)"><p>${item.desc}</p>`;
+    }
     gallery.appendChild(card);
   });
 });
 
+/* FILTER */
 function filterGallery(type){
   document.querySelectorAll(".category-bar button").forEach(b=>b.classList.remove("active"));
   event.target.classList.add("active");
   document.querySelectorAll(".card").forEach(c=>{
-    c.style.display=(type==="all"||c.classList.contains(type))?"block":"none";
+    c.style.display = type==="all" || c.classList.contains(type) ? "block" : "none";
   });
 }
-  
-window.addEventListener("DOMContentLoaded", () => {
-  const searchInput = document.getElementById("searchInput");
 
-  if (!searchInput) {
-    console.error("Search input not found");
-    return;
-  }
-
-  searchInput.addEventListener("input", () => {
-    const q = searchInput.value.toLowerCase();
-
-    document.querySelectorAll(".card").forEach(card => {
-      const text = card.dataset.text || "";
-      card.style.display = text.includes(q) ? "block" : "none";
-    });
+/* SEARCH */
+searchInput.addEventListener("input", ()=>{
+  const q = searchInput.value.toLowerCase();
+  document.querySelectorAll(".card").forEach(c=>{
+    c.style.display = c.dataset.text.includes(q) ? "block" : "none";
   });
 });
+
+/* FULLSCREEN IMAGE */
 const imageOverlay = document.getElementById("imageOverlay");
 const fullscreenImage = document.getElementById("fullscreenImage");
 
@@ -180,27 +179,13 @@ function openImage(src){
   imageOverlay.classList.add("show");
   document.body.classList.add("no-scroll");
 }
-
 function closeImage(){
   imageOverlay.classList.remove("show");
   document.body.classList.remove("no-scroll");
 }
-
-// close when clicking outside image
-imageOverlay.addEventListener("click", e=>{
-  if(e.target === imageOverlay) closeImage();
-});
-
-// ESC key support
-document.addEventListener("keydown", e=>{
-  if(e.key === "Escape") closeImage();
-});
-  
+imageOverlay.onclick = e => { if(e.target===imageOverlay) closeImage(); };
+document.onkeydown = e => { if(e.key==="Escape") closeImage(); };
 </script>
-<!-- IMAGE FULLSCREEN VIEW -->
-<div id="imageOverlay" class="image-overlay">
-  <span class="image-close" onclick="closeImage()">✕</span>
-  <img id="fullscreenImage">
-</div>
+
 </body>
 </html>
