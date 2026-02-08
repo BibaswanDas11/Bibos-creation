@@ -28,6 +28,7 @@
 <div id="sideMenu">
   <h3>Menu</h3>
   <a href="#" onclick="openAbout()">Home / About</a>
+  <a href="#" onclick="openFavorites()">❤️ Favorites</a>
   <a href="https://wa.me/916290386950" target="_blank">WhatsApp</a>
   <a href="#" onclick="ownerLogin()">Register as Owner</a>
   <a href="#" class="privacy-link" onclick="openPrivacy()">Privacy Policy</a>
@@ -53,6 +54,15 @@
 
 <!-- GALLERY -->
 <div id="gallery"></div>
+
+<!-- FAVORITES OVERLAY -->
+<div id="favoriteOverlay" class="modal">
+  <span class="closeBtn" onclick="closeFavorites()">✕</span>
+  <div class="modal-content">
+    <h2>❤️ Favorites</h2>
+    <div id="favoriteContainer" class="fav-grid"></div>
+  </div>
+</div>
 
 <!-- OWNER PANEL -->
 <div id="ownerPanel">
@@ -87,13 +97,15 @@
   </div>
 </div>
 
-<!-- IMAGE FULLSCREEN VIEW -->
+<!-- IMAGE FULLSCREEN -->
 <div id="imageOverlay" class="image-overlay">
   <span class="image-close" onclick="closeImage()">✕</span>
   <img id="fullscreenImage">
 </div>
 
 <script>
+const STORAGE_KEY = "bibos_favorites";
+
 const menuBtn = document.getElementById("menuBtn");
 const sideMenu = document.getElementById("sideMenu");
 const menuOverlay = document.getElementById("menuOverlay");
@@ -120,6 +132,64 @@ function closeAll(){
   closeModal();
 }
 
+/* FAVORITES */
+function getFavs(){ return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+function saveFavs(f){ localStorage.setItem(STORAGE_KEY, JSON.stringify(f)); }
+
+function toggleFav(btn){
+  const card = btn.closest(".card");
+  const id = card.dataset.id;
+  let favs = getFavs();
+
+  if(favs.includes(id)){
+    favs = favs.filter(x=>x!==id);
+    btn.classList.remove("fav");
+  } else {
+    favs.push(id);
+    btn.classList.add("fav");
+  }
+  saveFavs(favs);
+}
+
+function restoreFavs(){
+  const favs = getFavs();
+  document.querySelectorAll(".card").forEach(c=>{
+    if(favs.includes(c.dataset.id)){
+      c.querySelector(".fav-btn").classList.add("fav");
+    }
+  });
+}
+
+function openFavorites(){
+  closeAll();
+  document.body.classList.add("no-scroll");
+  favoriteOverlay.classList.add("show");
+  renderFavorites();
+}
+function closeFavorites(){
+  favoriteOverlay.classList.remove("show");
+  document.body.classList.remove("no-scroll");
+}
+
+function renderFavorites(){
+  const box = document.getElementById("favoriteContainer");
+  const favs = getFavs();
+  box.innerHTML = "";
+
+  if(!favs.length){
+    box.innerHTML = "<p>No favorites found</p>";
+    return;
+  }
+
+  favs.forEach(id=>{
+    const original = document.querySelector(`.card[data-id="${id}"]`);
+    if(!original) return;
+    const clone = original.cloneNode(true);
+    clone.querySelector(".fav-btn").remove();
+    box.appendChild(clone);
+  });
+}
+
 /* OWNER */
 function ownerLogin(){
   ownerPanel.style.display =
@@ -143,14 +213,21 @@ fetch("images.json?" + Date.now())
     const card = document.createElement("div");
     card.className = "card " + (isVideo ? "video" : "image");
     card.dataset.text = item.desc.toLowerCase();
+    card.dataset.id = item.file; // ⭐ AUTO ID
 
-    if (isVideo) {
-      card.innerHTML = `<video controls src="videos/${item.file}"></video><p>${item.desc}</p>`;
-    } else {
-      card.innerHTML = `<img src="images/${item.file}" alt="${item.desc}" onclick="openImage(this.src)"><p>${item.desc}</p>`;
-    }
+    card.innerHTML = isVideo
+      ? `<video controls src="videos/${item.file}"></video><p>${item.desc}</p>`
+      : `<img src="images/${item.file}" alt="${item.desc}" onclick="openImage(this.src)"><p>${item.desc}</p>`;
+
+    const favBtn = document.createElement("button");
+    favBtn.className = "fav-btn";
+    favBtn.innerHTML = "♥";
+    favBtn.onclick = () => toggleFav(favBtn);
+
+    card.appendChild(favBtn);
     gallery.appendChild(card);
   });
+  restoreFavs();
 });
 
 /* FILTER */
@@ -170,7 +247,7 @@ searchInput.addEventListener("input", ()=>{
   });
 });
 
-/* FULLSCREEN IMAGE */
+/* FULLSCREEN */
 const imageOverlay = document.getElementById("imageOverlay");
 const fullscreenImage = document.getElementById("fullscreenImage");
 
