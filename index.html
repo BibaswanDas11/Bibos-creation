@@ -142,7 +142,7 @@ fetch("images.json?"+Date.now())
     card.dataset.text = item.desc.toLowerCase();
     card.innerHTML = isVideo
       ? `<video controls src="videos/${item.file}"></video><p>${item.desc}</p>`
-      :<img src="images/${item.file}" alt="${item.desc}" onclick="openImage(this.src)">;
+      :'<img src="images/${item.file}" alt="${item.desc}" onclick="openImage(this.src)">';
     gallery.appendChild(card);
   });
 });
