@@ -6,7 +6,7 @@ body{
 }
 body.no-scroll{overflow:hidden}
 
-/* HEADER (same as category buttons) */
+/* HEADER */
 header{
   background:#ff6f61;
   color:#fff;
@@ -41,8 +41,6 @@ header{
   color:#333;
   font-size:18px;
 }
-
-/* Privacy link (ash, italic) */
 .privacy-link{
   font-size:13px;
   font-style:italic;
@@ -60,22 +58,52 @@ header{
 }
 #menuOverlay.show{display:block}
 
-/* CATEGORY BAR */
+/* TITLE */
 .title{text-align:center;margin:20px;font-size:26px}
-.category-bar{display:flex;gap:12px;justify-content:center;margin-bottom:15px}
+
+/* SEARCH */
+.search-bar{
+  position:sticky;
+  top:70px;
+  z-index:2000;
+  display:flex;
+  justify-content:center;
+  margin:15px 0 25px;
+}
+.search-box{
+  width:90%;
+  max-width:520px;
+  background:#1c1c1c;
+  border-radius:40px;
+  padding:12px 18px;
+  display:flex;
+  align-items:center;
+}
+.search-box input{
+  flex:1;
+  border:none;
+  outline:none;
+  background:transparent;
+  color:white;
+  font-size:15px;
+}
+
+/* CATEGORY */
+.category-bar{
+  display:flex;
+  justify-content:center;
+  gap:14px;
+  margin:10px 0 25px;
+}
 .category-bar button{
   background:#ff6f61;
   color:#fff;
   border:none;
-  padding:10px 20px;
-  border-radius:30px;
+  padding:10px 22px;
+  border-radius:999px;
   cursor:pointer;
-  transition:.25s;
 }
-.category-bar button.active,
-.category-bar button:hover{
-  background:#e74c3c;
-}
+.category-bar button.active{background:#e74c3c}
 
 /* GALLERY */
 #gallery{
@@ -84,27 +112,17 @@ header{
   grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
   gap:18px;
 }
-
-/* SMOOTH GRAPHICAL CARDS */
 .card{
   background:#fff;
   padding:10px;
   border-radius:14px;
   box-shadow:0 8px 18px rgba(0,0,0,.15);
-  transition:transform .3s ease, box-shadow .3s ease;
-}
-.card:hover{
-  transform:translateY(-6px) scale(1.02);
-  box-shadow:0 18px 40px rgba(0,0,0,.25);
 }
 .card img,.card video{
   width:100%;
   border-radius:12px;
 }
-.card p{
-  margin-top:8px;
-  font-size:15px;
-}
+.card p{margin-top:8px}
 
 /* MODALS */
 .modal{
@@ -156,191 +174,7 @@ header{
   border-radius:10px;
 }
 
-textarea{width:100%;height:90px}
-/* SEARCH BAR */
-.search-wrapper{
-  position:sticky;
-  top:60px; /* below header */
-  z-index:2000;
-  max-width:420px;
-  margin:10px auto 25px;
-  display:flex;
-  align-items:center;
-  background:#f2f2f2;
-  border-radius:30px;
-  padding:6px 14px;
-  box-shadow:0 6px 14px rgba(0,0,0,.15);
-}
-
-.search-wrapper input{
-  flex:1;
-  border:none;
-  outline:none;
-  background:transparent;
-  font-size:15px;
-  padding:6px;
-}
-
-#clearSearch{
-  display:none;
-  cursor:pointer;
-  font-size:18px;
-  color:#666;
-  padding-left:8px;
-}
-/* SEARCH BAR – FIXED LAYOUT */
-.search-wrapper{
-  position:sticky;
-  top:70px; /* below header */
-  z-index:2000;
-
-  width:100%;
-  display:flex;
-  justify-content:center;
-
-  margin:15px 0 25px;
-}
-
-.search-wrapper input{
-  width:100%;
-  max-width:420px;
-  border:none;
-  outline:none;
-  background:#f2f2f2;
-  border-radius:30px;
-  padding:12px 18px;
-  font-size:15px;
-  box-shadow:0 6px 14px rgba(0,0,0,.15);
-}
-
-#clearSearch{
-  position:absolute;
-  right:calc(50% - 190px);
-  cursor:pointer;
-  font-size:18px;
-  color:#666;
-  display:none;
-}
-/* ===== ANIMATED EXPAND SEARCH ===== */
-.search-wrapper{
-  width:100%;
-  display:flex;
-  justify-content:center;
-  margin:15px 0 25px;
-}
-
-.search-box{
-  position:relative;
-  width:220px;                 /* collapsed size */
-  transition:width .35s ease;
-}
-
-.search-box input{
-  width:100%;
-  padding:12px 40px 12px 18px;
-  border:none;
-  outline:none;
-  border-radius:30px;
-  background:#f2f2f2;
-  font-size:15px;
-  box-shadow:0 6px 14px rgba(0,0,0,.15);
-  transition:box-shadow .35s ease;
-}
-
-/* EXPAND ON FOCUS */
-.search-box:focus-within{
-  width:420px;                 /* expanded size */
-}
-
-.search-box:focus-within input{
-  box-shadow:0 12px 28px rgba(0,0,0,.25);
-}
-
-/* CLEAR BUTTON */
-#clearSearch{
-  position:absolute;
-  right:14px;
-  top:50%;
-  transform:translateY(-50%);
-  cursor:pointer;
-  font-size:18px;
-  color:#666;
-  display:none;
-}
-
-/* MOBILE SAFETY */
-@media(max-width:520px){
-  .search-box{width:180px}
-  .search-box:focus-within{width:92vw}
-}
-/* ===== FORCE CATEGORY BAR STYLE (FIX) ===== */
-.category-bar{
-  display:flex;
-  justify-content:center;
-  gap:14px;
-  margin:20px 0 25px;
-  position:relative;
-  z-index:5;
-}
-
-.category-bar button{
-  background:#ff6f61;
-  color:#fff;
-  border:none;
-  padding:10px 22px;
-  border-radius:999px;
-  font-size:15px;
-  cursor:pointer;
-  transition:
-    background .25s ease,
-    transform .25s ease,
-    box-shadow .25s ease;
-}
-
-.category-bar button:hover{
-  transform:translateY(-2px);
-  box-shadow:0 8px 20px rgba(0,0,0,.25);
-}
-
-.category-bar button.active{
-  background:#e74c3c;
-  box-shadow:0 10px 24px rgba(0,0,0,.3);
-}
-/* ===== SEARCH BAR FIX ===== */
-.search-bar{
-  position: sticky;
-  top: 70px;
-  z-index: 2000;
-  display: flex;
-  justify-content: center;
-  margin: 15px 0 25px;
-}
-
-.search-box{
-  width: 90%;
-  max-width: 520px;
-  background: #1c1c1c;
-  border-radius: 40px;
-  padding: 12px 18px;
-  display: flex;
-  align-items: center;
-  transition: width .35s ease, box-shadow .35s ease;
-}
-
-.search-box:focus-within{
-  width: 95%;
-  box-shadow: 0 14px 35px rgba(0,0,0,.35);
-}
-
-/* ===== CATEGORY BAR LOCK ===== */
-.category-bar{
-  clear: both;
-  display: flex;
-  justify-content: center;
-  gap: 14px;
-  margin: 10px 0 25px;
-}
-/* ===== IMAGE FULLSCREEN VIEW ===== */
+/* IMAGE FULLSCREEN */
 .image-overlay{
   position:fixed;
   inset:0;
@@ -351,22 +185,15 @@ textarea{width:100%;height:90px}
   justify-content:center;
   opacity:0;
   visibility:hidden;
-  transition:.3s ease;
+  transition:.3s;
   z-index:10000;
 }
-
-.image-overlay.show{
-  opacity:1;
-  visibility:visible;
-}
-
+.image-overlay.show{opacity:1;visibility:visible}
 .image-overlay img{
   max-width:92vw;
   max-height:88vh;
   border-radius:14px;
-  box-shadow:0 25px 60px rgba(0,0,0,.6);
 }
-
 .image-close{
   position:absolute;
   top:20px;
@@ -374,4 +201,4 @@ textarea{width:100%;height:90px}
   font-size:32px;
   color:white;
   cursor:pointer;
-}
+                                               }
