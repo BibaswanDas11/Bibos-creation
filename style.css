@@ -238,3 +238,17 @@ header{
   max-height: 90vh;
   overflow-y: auto;
 }
+/* ===== FAVORITES SCROLL FIX ===== */
+
+#favoriteOverlay {
+  display: flex;
+  align-items: flex-start !important;
+  justify-content: center;
+  overflow-y: auto !important;
+  padding: 20px 0;
+}
+
+#favoriteOverlay .modal-content {
+  max-height: none !important;
+  overflow: visible !important;
+}
